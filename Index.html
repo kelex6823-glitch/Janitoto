@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JANI TOTO SCANNER</title>
+<style>
+body {
+  background:#101827;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+  text-align:center;
+}
+.box {
+  background:#1e293b;
+  padding:18px;
+  border-radius:12px;
+  margin:15px auto;
+  max-width:600px;
+}
+textarea {
+  width:95%;
+  height:130px;
+  background:#0f172a;
+  color:white;
+  padding:10px;
+  border-radius:8px;
+  font-size:16px;
+}
+button {
+  background:#06b6d4;
+  color:#001;
+  padding:12px 20px;
+  border:0;
+  border-radius:8px;
+  font-weight:bold;
+  margin:8px;
+}
+.result {
+  background:#0f172a;
+  padding:12px;
+  border-radius:8px;
+  margin-top:10px;
+  overflow-wrap:anywhere;
+}
+</style>
+</head>
+<body>
+
+<h1>JANI TOTO SCANNER</h1>
+<p>ANALISIS ANGKA 2D • 3D • 4D</p>
+
+<div class="box">
+<h3>Masukkan Riwayat Angka 4D</h3>
+<textarea id="data" placeholder="1234
+5678
+9087
+4412"></textarea>
+<br>
+<button onclick="analisis()">ANALISIS</button>
+<button onclick="hapus()">HAPUS</button>
+</div>
+
+<div class="box">
+<h3>HASIL ANALISIS</h3>
+<div id="hasil"></div>
+</div>
+
+<script>
+function analisis(){
+ let teks=document.getElementById("data").value;
+ let angka=teks.match(/\d{4}/g)||[];
+
+ if(angka.length===0){
+ alert("Masukkan angka 4D terlebih dahulu");
+ return;
+ }
+
+ let digit={},dua={},tiga={},empat={};
+
+ angka.forEach(n=>{
+  for(let d of n)
+   digit[d]=(digit[d]||0)+1;
+
+  let a=n.slice(2);
+  let b=n.slice(1);
+
+  dua[a]=(dua[a]||0)+1;
+  tiga[b]=(tiga[b]||0)+1;
+  empat[n]=(empat[n]||0)+1;
+ });
+
+ function urut(obj){
+  return Object.entries(obj)
+   .sort((a,b)=>b[1]-a[1])
+   .slice(0,15)
+   .map(x=>x[0]+" ("+x[1]+")")
+   .join(" | ");
+ }
+
+ document.getElementById("hasil").innerHTML=
+ "<div class='result'><h3>ANGKA TERBANYAK</h3>"+urut(digit)+
+ "</div><div class='result'><h3>2D</h3>"+urut(dua)+
+ "</div><div class='result'><h3>3D</h3>"+urut(tiga)+
+ "</div><div class='result'><h3>4D</h3>"+urut(empat)+
+ "</div><p>Total data: "+angka.length+"</p>";
+}
+function hapus(){
+ document.getElementById("data").value="";
+ document.getElementById("hasil").innerHTML="";
+}
+</script>
+
+</body>
+</html>
